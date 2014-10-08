@@ -1,18 +1,18 @@
-def checkNumOfNeighbors(grid):
-  neighborGrid = []
-  H = len(grid)
-  for x in range(H):
-    neighborGrid.append([])
-    W = len(grid[x])
-    for y in range(W):
-      neighborGrid[x].append(0)
-      for i in range(-1, 2):
-        for j in range(-1, 2):
-          if i != 0 or j != 0:
-            rx = x + i
-            ry = y + j
+def num_of_neighbors(grid):
+    neighbor_grid = []
+    h = len(grid)
+    for x in range(h):
+        neighbor_grid.append([])
+        w = len(grid[x])
+        for y in range(w):
+            neighbor_grid[x].append(0)
+            for i in range(-1, 2):
+                for j in range(-1, 2):
+                    if i != 0 or j != 0:
+                        rx = x + i
+                        ry = y + j
 
-            if rx >= 0 and ry >= 0 and rx < W and ry < H:
-              if grid[rx][ry] == 1:
-                neighborGrid[x][y] += 1
-  return neighborGrid
+                        if rx >= 0 and ry >= 0 and rx < w and ry < h:
+                            if grid[rx][ry] == 1:
+                                neighbor_grid[x][y] += 1
+    return neighbor_grid

@@ -1,41 +1,49 @@
 # main.py
 import neighborLogic
 
-START_GRID = [[0,0,0,0,0,0,0,0,0,0],
-              [0,0,0,0,0,0,0,0,0,0],
-              [0,0,0,0,0,0,0,0,0,0],
-              [0,0,0,0,0,0,0,0,0,0],
-              [0,0,0,0,0,0,0,0,0,0],
-              [0,0,0,0,0,0,0,0,0,0],
-              [0,0,0,0,0,0,0,0,0,0],
-              [0,0,1,1,1,0,0,0,0,0],
-              [0,0,0,0,1,0,0,0,0,0],
-              [0,0,0,1,0,0,0,0,0,0]]
+START_GRID = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+              [0, 0, 1, 1, 1, 0, 0, 0, 0, 0],
+              [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+              [0, 0, 0, 1, 0, 0, 0, 0, 0, 0]]
 
-def display2DGrid(grid):
-  "Print 2D grid to screen"
-  for row in range(len(grid)):
-    for column in range(len(grid[row])):
-      print(grid[row][column], end=' ')
-			
-    print()
 
-def stepLogic(mainGrid, neighborGrid):
-  for x, row in enumerate(neighborGrid):
-    for y, cell in enumerate(row):
-      if cell == 3:
-        mainGrid[x][y] = 1
-      elif cell < 2 or cell > 3:
-        mainGrid[x][y] = 0
-  return mainGrid
-        
+def display_2d_grid(grid):
+    """Print 2D grid to screen"""
+    for row in grid:
+        for cell in row:
+            print(cell, end=' ')
+
+        print()
+
+
+def step_logic(main_grid, neighbor_grid):
+    """
+
+    :param main_grid:
+    :param neighbor_grid:
+    :return:
+    """
+    for x, row in enumerate(neighbor_grid):
+        for y, cell in enumerate(row):
+            if cell == 3:
+                main_grid[x][y] = 1
+            elif cell < 2 or cell > 3:
+                main_grid[x][y] = 0
+    return main_grid
+
 
 if __name__ == "__main__":
 
     mainGrid = START_GRID
-
-    while(1):
-      neighborGrid = neighborLogic.checkNumOfNeighbors(mainGrid)
-      display2DGrid(mainGrid)
-      input('Press enter to continue...')
-      mainGrid = stepLogic(mainGrid, neighborGrid)
+    cease = 'y'
+    while cease != 'n':
+        neighborGrid = neighborLogic.num_of_neighbors(mainGrid)
+        display_2d_grid(mainGrid)
+        cease = input('Continue? (Y/N)')
+        mainGrid = step_logic(mainGrid, neighborGrid)
