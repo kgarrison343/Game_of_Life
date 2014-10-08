@@ -12,7 +12,6 @@ def num_of_neighbors(grid):
                         rx = x + i
                         ry = y + j
 
-                        if rx >= 0 and ry >= 0 and rx < w and ry < h:
-                            if grid[rx][ry] == 1:
-                                neighbor_grid[x][y] += 1
+                        if ry >= 0 and 0 <= rx < w and ry < h and grid[rx][ry] == 1:
+                            neighbor_grid[x][y] += 1
     return neighbor_grid
