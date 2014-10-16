@@ -1,17 +1,20 @@
 def num_of_neighbors(grid):
+    """
+    Counts number of neighbors and returns a grid for use by the step_logic method
+    :param grid: List of List of Ints representing start state
+    :return: List of List of Ints representing each member of grid's number of orthogonal and diagonal neighbors
+    """
     neighbor_grid = []
-    h = len(grid)
-    for x in range(h):
+    for x, row in enumerate(grid):
         neighbor_grid.append([])
-        w = len(grid[x])
-        for y in range(w):
+        for y, cell in enumerate(row):
             neighbor_grid[x].append(0)
-            for i in range(-1, 2):
+            for i in range(-1,2):
                 for j in range(-1, 2):
-                    if i != 0 or j != 0:
-                        rx = x + i
-                        ry = y + j
+                    if not(i == 0 and j == 0):
+                        rel_x = x + i
+                        rel_y = y + j
+                        if len(row) > rel_y >= 0 and 0 <= rel_x < len(grid):
+                            neighbor_grid[x][y] += grid[rel_x][rel_y]
 
-                        if ry >= 0 and 0 <= rx < w and ry < h and grid[rx][ry] == 1:
-                            neighbor_grid[x][y] += 1
     return neighbor_grid
