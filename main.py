@@ -5,19 +5,19 @@ import sys
 import pygame
 from pygame.locals import *
 
+import json
+
 from neighborLogic import num_of_neighbors
 
 
-START_GRID = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-              [0, 0, 1, 1, 1, 0, 0, 0, 0, 0],
-              [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-              [0, 0, 0, 1, 0, 0, 0, 0, 0, 0]]
+def save_current_grid_state(grid):
+    with open('save/savedGrid', 'w') as save_file:
+        json.dump(grid, save_file)
+
+
+def load_saved_grid_state():
+    with open('save/savedGrid', 'r') as load_file:
+        return json.load(load_file)
 
 
 def step_logic(main_grid, neighbor_grid):
@@ -57,6 +57,18 @@ def display_2d_grid(grid):
         cell_x = 2
 
 if __name__ == "__main__":
+
+    START_GRID = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                  [0, 0, 1, 1, 1, 0, 0, 0, 0, 0],
+                  [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+                  [0, 0, 0, 1, 0, 0, 0, 0, 0, 0]]
+
     pygame.init()
     fps_clock = pygame.time.Clock()
 
@@ -81,7 +93,14 @@ if __name__ == "__main__":
                     neighborGrid = num_of_neighbors(mainGrid)
                     mainGrid = step_logic(mainGrid, neighborGrid)
                     display_2d_grid(mainGrid)
-                if event.key == K_r:
+                elif event.key == K_r:
+                    mainGrid = START_GRID
+                    neighborGrid = []
+                    display_2d_grid(mainGrid)
+                elif event.key == K_s:
+                    save_current_grid_state(mainGrid)
+                elif event.key == K_l:
+                    START_GRID = load_saved_grid_state()
                     mainGrid = START_GRID
                     neighborGrid = []
                     display_2d_grid(mainGrid)
