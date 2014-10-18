@@ -44,17 +44,21 @@ def display_2d_grid(grid):
     cell_length = (windowLength // 10) - 2
 
     windowSurfaceObj.fill(grey)
-
+    cellRects = []
     cell_x, cell_y = 2, 2
-    for row in grid:
-        for cell in row:
+    for x, row in enumerate(grid):
+        cellRects.append([])
+        for y, cell in enumerate(row):
+            cellRects[x].append(Rect(cell_x, cell_y, cell_length, cell_length))
             if cell == 1:
-                pygame.draw.rect(windowSurfaceObj, black, (cell_x, cell_y, cell_length, cell_length))
+                pygame.draw.rect(windowSurfaceObj, black, cellRects[x][y])
             else:
-                pygame.draw.rect(windowSurfaceObj, white, (cell_x, cell_y, cell_length, cell_length))
+                pygame.draw.rect(windowSurfaceObj, white, cellRects[x][y])
             cell_x += cell_length + 2
         cell_y += cell_length + 2
         cell_x = 2
+    return cellRects
+
 
 if __name__ == "__main__":
 
@@ -82,7 +86,7 @@ if __name__ == "__main__":
 
     mainGrid = START_GRID
 
-    display_2d_grid(mainGrid)
+    cell_rects = display_2d_grid(mainGrid)
     while True:
         for event in pygame.event.get():
             if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
@@ -92,18 +96,25 @@ if __name__ == "__main__":
                 if event.key == K_SPACE:
                     neighborGrid = num_of_neighbors(mainGrid)
                     mainGrid = step_logic(mainGrid, neighborGrid)
-                    display_2d_grid(mainGrid)
+                    cell_rects = display_2d_grid(mainGrid)
                 elif event.key == K_r:
                     mainGrid = START_GRID
                     neighborGrid = []
-                    display_2d_grid(mainGrid)
+                    cell_rects = display_2d_grid(mainGrid)
                 elif event.key == K_s:
                     save_current_grid_state(mainGrid)
                 elif event.key == K_l:
                     START_GRID = load_saved_grid_state()
                     mainGrid = START_GRID
                     neighborGrid = []
-                    display_2d_grid(mainGrid)
+                    cell_rects = display_2d_grid(mainGrid)
+            elif event.type == MOUSEBUTTONDOWN:
+                pos = pygame.mouse.get_pos()
+                for x, row in enumerate(cell_rects):
+                    for y, cell in enumerate(row):
+                        if cell.collidepoint(pos) == 1:
+                            mainGrid[x][y] = 0 if mainGrid[x][y] == 1 else 1
+                            cell_rects = display_2d_grid(mainGrid)
 
         pygame.display.update()
         fps_clock.tick(30)
