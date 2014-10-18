@@ -41,7 +41,7 @@ def display_2d_grid(grid):
 
     :param grid:
     """
-    cell_length = (windowLength // 10) - 2
+    cell_length = (windowLength // len(grid)) - 2
 
     windowSurfaceObj.fill(grey)
     cellRects = []
@@ -62,21 +62,16 @@ def display_2d_grid(grid):
 
 if __name__ == "__main__":
 
-    START_GRID = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                  [0, 0, 1, 1, 1, 0, 0, 0, 0, 0],
-                  [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-                  [0, 0, 0, 1, 0, 0, 0, 0, 0, 0]]
+    START_GRID = []
+
+    for i in range(50):
+        START_GRID.append([])
+        START_GRID[i] = [0 for i in range(50)]
 
     pygame.init()
     fps_clock = pygame.time.Clock()
 
-    windowLength = 302
+    windowLength = 502
     windowSurfaceObj = pygame.display.set_mode((windowLength, windowLength))
     pygame.display.set_caption('Game of Life')
 
@@ -104,8 +99,7 @@ if __name__ == "__main__":
                 elif event.key == K_s:
                     save_current_grid_state(mainGrid)
                 elif event.key == K_l:
-                    START_GRID = load_saved_grid_state()
-                    mainGrid = START_GRID
+                    mainGrid = load_saved_grid_state()
                     neighborGrid = []
                     cell_rects = display_2d_grid(mainGrid)
             elif event.type == MOUSEBUTTONDOWN:
